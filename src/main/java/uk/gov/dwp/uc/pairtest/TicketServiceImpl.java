@@ -1,5 +1,8 @@
 package uk.gov.dwp.uc.pairtest;
 
+import thirdparty.discount.Discount;
+import thirdparty.discount.DiscountService;
+import thirdparty.discount.exception.InvalidDiscountCodeException;
 import thirdparty.paymentgateway.TicketPaymentService;
 import thirdparty.seatbooking.SeatReservationService;
 import uk.gov.dwp.uc.pairtest.domain.TicketPurchaseRequest;
@@ -17,15 +20,18 @@ public class TicketServiceImpl implements TicketService {
     // Could be Autowired
     private final SeatReservationService reservationService;
     private final TicketPaymentService paymentService;
+    private final DiscountService discountService;
 
     /**
      * Constructor
      * @param reservationService reference to the reservation service
      * @param paymentService reference to the payment service
      */
-    public TicketServiceImpl(SeatReservationService reservationService, TicketPaymentService paymentService) {
+    public TicketServiceImpl(SeatReservationService reservationService, TicketPaymentService paymentService,
+                             DiscountService discountService) {
         this.paymentService = paymentService;
         this.reservationService = reservationService;
+        this.discountService = discountService;
     }
 
     /**
@@ -88,6 +94,19 @@ public class TicketServiceImpl implements TicketService {
                 default:
             }
         }
+        try {
+            if (null != discountService) {
+                Discount accountDiscount = discountService.getDiscountPercentage(ticketPurchaseRequest.getAccountId(),
+                        ticketPurchaseRequest.getDiscountCode());
+                // If the discount is null, then it was not found
+                if (null != accountDiscount) {
+                    totalFee -= (int) ((double) totalFee * (accountDiscount.percentage() / 100.00));
+                }
+            }
+        } catch (InvalidDiscountCodeException ignored) {
+            // TODO: log something here or report error
+        }
+        // Calculate the discounted amount
         return totalFee;
     }
 

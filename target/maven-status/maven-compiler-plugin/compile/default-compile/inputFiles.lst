@@ -1,0 +1,11 @@
+/home/james/source/Cinema2/src/main/java/thirdparty/discount/DiscountService.java
+/home/james/source/Cinema2/src/main/java/thirdparty/seatbooking/SeatReservationService.java
+/home/james/source/Cinema2/src/main/java/uk/gov/dwp/uc/pairtest/domain/TicketPurchaseRequest.java
+/home/james/source/Cinema2/src/main/java/uk/gov/dwp/uc/pairtest/TicketServiceImpl.java
+/home/james/source/Cinema2/src/main/java/uk/gov/dwp/uc/pairtest/TicketService.java
+/home/james/source/Cinema2/src/main/java/uk/gov/dwp/uc/pairtest/domain/TicketRequest.java
+/home/james/source/Cinema2/src/main/java/thirdparty/discount/Discount.java
+/home/james/source/Cinema2/src/main/java/thirdparty/paymentgateway/TicketPaymentServiceImpl.java
+/home/james/source/Cinema2/src/main/java/thirdparty/paymentgateway/TicketPaymentService.java
+/home/james/source/Cinema2/src/main/java/uk/gov/dwp/uc/pairtest/exception/InvalidPurchaseException.java
+/home/james/source/Cinema2/src/main/java/thirdparty/discount/exception/InvalidDiscountCodeException.java
