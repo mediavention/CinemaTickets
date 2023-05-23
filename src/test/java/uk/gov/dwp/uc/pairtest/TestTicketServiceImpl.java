@@ -2,6 +2,7 @@ package uk.gov.dwp.uc.pairtest;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import thirdparty.discount.DiscountService;
 import thirdparty.paymentgateway.TicketPaymentService;
 import thirdparty.seatbooking.SeatReservationService;
 import uk.gov.dwp.uc.pairtest.domain.TicketPurchaseRequest;
@@ -19,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestTicketServiceImpl {
     private final SeatReservationService reservationService = Mockito.mock(SeatReservationService.class);
     private final TicketPaymentService paymentService = Mockito.mock(TicketPaymentService.class);
-    private final TicketServiceImpl ticketService = new TicketServiceImpl(reservationService, paymentService);
+    private final DiscountService discountService = Mockito.mock(DiscountService.class);
+    private final TicketServiceImpl ticketService = new TicketServiceImpl(reservationService, paymentService, discountService);
 
     /**
      * Unit Test, Valid purchase
@@ -32,7 +34,7 @@ public class TestTicketServiceImpl {
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.CHILD, 10));
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.INFANT, 10));
         TicketPurchaseRequest ticketPurchase =
-                new TicketPurchaseRequest(111, ticketRequestList.toArray(new TicketRequest[0]));
+                new TicketPurchaseRequest(111, ticketRequestList.toArray(new TicketRequest[0]), null);
         try {
             ticketService.purchaseTickets(ticketPurchase);
         } catch (Exception ex) {
@@ -51,7 +53,7 @@ public class TestTicketServiceImpl {
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.CHILD, 11));
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.INFANT, 10));
         TicketPurchaseRequest ticketPurchase =
-                new TicketPurchaseRequest(111, ticketRequestList.toArray(new TicketRequest[0]));
+                new TicketPurchaseRequest(111, ticketRequestList.toArray(new TicketRequest[0]), null);
         Throwable exception = assertThrows(InvalidPurchaseException.class, () -> ticketService.purchaseTickets(ticketPurchase));
         assertEquals(String.format("Total tickets exceeded %d", TicketServiceImpl.MAX_TICKETS), exception.getMessage());
     }
@@ -66,7 +68,7 @@ public class TestTicketServiceImpl {
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.CHILD, 11));
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.INFANT, 10));
         TicketPurchaseRequest ticketPurchase =
-                new TicketPurchaseRequest(111, ticketRequestList.toArray(new TicketRequest[0]));
+                new TicketPurchaseRequest(111, ticketRequestList.toArray(new TicketRequest[0]), null);
         Throwable exception = assertThrows(InvalidPurchaseException.class, () -> ticketService.purchaseTickets(ticketPurchase));
         assertEquals("At least one adult is required when purchasing tickets", exception.getMessage());
     }
@@ -81,7 +83,7 @@ public class TestTicketServiceImpl {
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.ADULT, 10));
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.INFANT, 10));
         TicketPurchaseRequest ticketPurchase =
-                new TicketPurchaseRequest(0, ticketRequestList.toArray(new TicketRequest[0]));
+                new TicketPurchaseRequest(0, ticketRequestList.toArray(new TicketRequest[0]), null);
         Throwable exception = assertThrows(InvalidPurchaseException.class, () -> ticketService.purchaseTickets(ticketPurchase));
         assertEquals("Invalid account id of 0", exception.getMessage());
     }
@@ -97,7 +99,7 @@ public class TestTicketServiceImpl {
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.CHILD, 5));
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.INFANT, 10));
         TicketPurchaseRequest ticketPurchase =
-                new TicketPurchaseRequest(0, ticketRequestList.toArray(new TicketRequest[0]));
+                new TicketPurchaseRequest(0, ticketRequestList.toArray(new TicketRequest[0]), null);
         ticketService.calculateTotalTickets(ticketPurchase);
         assertEquals((1 + 5),ticketService.calculateTotalTickets(ticketPurchase));
     }
@@ -113,7 +115,7 @@ public class TestTicketServiceImpl {
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.CHILD, 5));
         ticketRequestList.add(new TicketRequest(TicketRequest.Type.INFANT, 2));
         TicketPurchaseRequest ticketPurchase =
-                new TicketPurchaseRequest(0, ticketRequestList.toArray(new TicketRequest[0]));
+                new TicketPurchaseRequest(0, ticketRequestList.toArray(new TicketRequest[0]), null);
         assertEquals((10 * TicketServiceImpl.ADULT_FEE + 5 * TicketServiceImpl.CHILD_FEE),
                 ticketService.calculateTotalPurchase(ticketPurchase));
     }

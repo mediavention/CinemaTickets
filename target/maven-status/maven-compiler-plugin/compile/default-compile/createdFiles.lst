@@ -1,0 +1,13 @@
+uk/gov/dwp/uc/pairtest/domain/TicketPurchaseRequest.class
+uk/gov/dwp/uc/pairtest/TicketServiceImpl$1.class
+thirdparty/paymentgateway/TicketPaymentServiceImpl.class
+uk/gov/dwp/uc/pairtest/domain/TicketRequest.class
+thirdparty/discount/exception/InvalidDiscountCodeException.class
+uk/gov/dwp/uc/pairtest/TicketService.class
+uk/gov/dwp/uc/pairtest/TicketServiceImpl.class
+uk/gov/dwp/uc/pairtest/domain/TicketRequest$Type.class
+thirdparty/seatbooking/SeatReservationService.class
+thirdparty/paymentgateway/TicketPaymentService.class
+uk/gov/dwp/uc/pairtest/exception/InvalidPurchaseException.class
+thirdparty/discount/Discount.class
+thirdparty/discount/DiscountService.class
